@@ -10,7 +10,7 @@ public class Sphere extends RadialGeometry{
     /**
      * The center point of the sphere
      */
-    private Point center;
+    private final Point center;
 
     /**
      * The constructor of sphere that gets a point and a radius and initialize the values

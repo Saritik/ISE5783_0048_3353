@@ -7,7 +7,7 @@ public abstract class RadialGeometry {
     /**
      * The radius of each geometry
      */
-     protected double radius;
+     protected final double radius;
 
     /**
      * Constructor that sets the radius

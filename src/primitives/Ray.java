@@ -35,7 +35,12 @@ public class Ray {
      * @return a boolean results that says if its equals or not
      */
     @Override
-    public boolean equals(Object obj) { return p0.equals(((Ray)obj).p0) && dir.equals(((Ray)obj).dir); }
+    public boolean equals(Object obj) {
+        if(this == obj) return true;
+        if(obj instanceof Ray other)
+            return p0.equals(other.p0) && dir.equals(other.dir);
+        return false;
+    }
 
     /**
      * The toString method that we override

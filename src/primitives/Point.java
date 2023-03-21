@@ -33,15 +33,22 @@ public class Point {
      */
     @Override
     public boolean equals(Object obj) {
-        return xyz.equals(obj);
+        if(this == obj)
+            return true;
+        if(obj instanceof Point other)
+            return xyz.equals(other.xyz);
+        return false;
     }
+
+    @Override
+    public int hashCode() { return xyz.hashCode(); }
 
     /**
      * The toString method that we override
      * @return a string of the object
      */
     @Override
-    public String toString() { return xyz.toString(); }
+    public String toString() { return "" + xyz; }
 
     /**
      * Adds a vector to the point

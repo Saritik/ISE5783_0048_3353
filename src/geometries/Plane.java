@@ -9,11 +9,11 @@ public class Plane implements Geometry {
     /**
      * The point that presents the plane
      */
-    private Point q0;
+    private final Point q0;
     /**
      * The normal that presents the plane with the point
      */
-    private Vector normal;
+    private final Vector normal;
 
     /**
      * Constructor of the plane that initialize the values

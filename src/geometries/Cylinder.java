@@ -11,7 +11,7 @@ public class Cylinder extends Tube {
     /**
      * The height of the cylinder
      */
-    private double height;
+    private final double height;
 
     /**
      * Constructor that initialize the values and the inherits values

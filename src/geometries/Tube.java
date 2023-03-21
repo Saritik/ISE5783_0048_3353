@@ -11,7 +11,7 @@ public class Tube extends RadialGeometry{
     /**
      * The axis ray of the tube
      */
-    protected Ray axisRay;
+    protected final Ray axisRay;
 
     /**
      * Constructor that initialize the values
@@ -42,7 +42,7 @@ public class Tube extends RadialGeometry{
      */
     @Override
     public String toString() {
-        return super.toString() +
+        return "->" + super.toString() +
                 "Axis ray: " + axisRay + "\n";
     }
 }
