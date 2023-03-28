@@ -24,10 +24,17 @@ public class Ray {
     }
 
     /**
-     * A get method for the ray
-     * @return our ray
+     * A get function to return the point of the ray
+     * @returnthe point of the ray
      */
-    public Ray getRay(){ return new Ray(p0, dir); }
+    public Point getP0(){ return p0; }
+
+    /**
+     * A get function to return the vector of the ray
+     * @return vector of the ray
+     */
+    public Vector getDir() { return dir; }
+
 
     /**
      * The equal method that we override to equal between a ray to an object
