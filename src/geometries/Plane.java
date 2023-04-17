@@ -21,7 +21,12 @@ public class Plane implements Geometry {
      * @param p2 second point
      * @param p3 third point
      */
-    public Plane(Point p1, Point p2, Point p3){ normal = null; q0 = p1; }
+    public Plane(Point p1, Point p2, Point p3){
+        Vector v1 = p2.subtract(p1);
+        Vector v2 = p3.subtract(p1);
+        normal = v1.crossProduct(v2).normalize();
+        q0 = p1;
+    }
 
     /**
      * constructor that gets a point and a vector to initialize the values
@@ -50,7 +55,8 @@ public class Plane implements Geometry {
      * @param point the point that we gets
      * @return the normal
      */
-    public Vector getNormal(Point point) { return null; }
+    @Override
+    public Vector getNormal(Point point) { return normal; }
 
     /**
      * the toString method that we override

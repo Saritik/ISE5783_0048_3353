@@ -25,8 +25,7 @@ public class VectorTests {
                 "Add v plus -v must throw exception");
     }
 
-    /** Test method for {@link primitives.Vector#subtract(primitives.Vector)}.
-    */
+    /** Test method for {@link primitives.Vector#subtract(Point)}.*/
     @Test
     public void testSubtract() {
         // ============ Equivalence Partitions Tests ==============
@@ -39,8 +38,7 @@ public class VectorTests {
                 "Subtract v from v must throw exception");
     }
 
-    /** Test method for {@link primitives.Point3D#subtract(primitives.Point3D)}.
-    */
+    /** Test method for {@link primitives.Point#subtract(Point)} .*/
     @Test
     public void testPointSubtract() {
         // ============ Equivalence Partitions Tests ==============
@@ -113,7 +111,7 @@ public class VectorTests {
     public void testLengthSquared() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Simple test
-        assertEquals(14d, new Vector(1, 2, 3).lengthSquared(), 0.00001, "lengthSquared() wrong value");
+        assertEquals(14, new Vector(1, 2, 3).lengthSquared(), 0.00001, "lengthSquared() wrong value");
     }
 
     /** Test method for {@link primitives.Vector#length()}.
@@ -124,7 +122,7 @@ public class VectorTests {
         assertEquals(5d, new Vector(0, 3, 4).length(), 0.00001, "length() wrong value");
     }
 
-    /** Test method for {@link primitives.Vector#normalized()}.
+    /** Test method for {@link Vector#normalize()}.
     */
     @Test
     public void testNormalize() {

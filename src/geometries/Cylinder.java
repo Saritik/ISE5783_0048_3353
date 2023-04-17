@@ -4,6 +4,8 @@ import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
 
+import static primitives.Util.isZero;
+
 /**
  * A class that inherits from Tube class
  */
@@ -35,7 +37,22 @@ public class Cylinder extends Tube {
      * @param point the point that we gets
      * @return the normal
      */
-    public Vector getNormal(Point point) { return null; }
+    @Override
+    public Vector getNormal(Point point) {
+        Point p0 = axisRay.getP0();
+        Vector dir = axisRay.getDir();
+        Point pointTop = p0.add(dir.scale(height));
+
+        //checking if the point is at the top of the cylinder
+        if(point.equals(pointTop) || isZero(dir.dotProduct(point.subtract(pointTop))))
+            return dir;
+
+        // checking if the point is at the base of the cylinder
+        if(point.equals(p0) || isZero(dir.dotProduct(point.subtract(p0))))
+            return dir.scale(-1);
+
+        return super.getNormal(point);
+    }
 
     /**
      * the toString method that we override
