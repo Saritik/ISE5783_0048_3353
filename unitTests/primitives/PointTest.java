@@ -7,9 +7,10 @@ import org.junit.jupiter.api.Test;
 import primitives.*;
 
 /**
-* Point class tests
-* @author Orit Rozenblit
-*/
+ * test for Point class
+ * @author Sarit Tik 213230048 saritik16@gmail.com
+ * @author Hadas Zehevi 325543353 h0548510062@gmail.com
+ */
 class PointTest {
 
     /** Test method for {@link primitives.Point#add(primitives.Vector)}.
@@ -46,12 +47,12 @@ class PointTest {
     void testDistanceSquared() {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Simple test
-        assertEquals(14d, new Point(1, 1, 1).distanceSquared(new Point(2, 3, 4)), 0.0001, //
+        assertEquals(14, new Point(1, 1, 1).distanceSquared(new Point(2, 3, 4)), 0.0001, //
                 "Wrong squared distance between the point and itself");
 
         // =============== Boundary Values Tests ==================
         // TC11: test distance with the same point
-        assertEquals(0d, new Point(1, 2, 3).distanceSquared(new Point(1, 2, 3)), 0.0001, //
+        assertEquals(0, new Point(1, 2, 3).distanceSquared(new Point(1, 2, 3)), 0.0001, //
                 "Wrong squared distance between the point and itself");
     }
 
@@ -66,7 +67,7 @@ class PointTest {
 
         // =============== Boundary Values Tests ==================
         // TC11: test distance with the same point
-        assertEquals(0d, new Point(1, 2, 3).distance(new Point(1, 2, 3)), 0.0001, //
+        assertEquals(0, new Point(1, 2, 3).distance(new Point(1, 2, 3)), 0.0001, //
                 "Wrong distance between the point and itself");
     }
 }

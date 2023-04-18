@@ -6,9 +6,10 @@ import org.junit.jupiter.api.Test;
 import static primitives.Util.*;
 import primitives.*;
 
-/** Unit tests for primitives.Vector class
- *
- * @author Orit Rozenblit
+/**
+ * test for Vector class
+ * @author Sarit Tik 213230048 saritik16@gmail.com
+ * @author Hadas Zehevi 325543353 h0548510062@gmail.com
  */
 public class VectorTests {
     /** Test method for {@link primitives.Vector#add(primitives.Vector)}.
@@ -73,16 +74,15 @@ public class VectorTests {
         // ============ Equivalence Partitions Tests ==============
         // TC01: Simple dotProduct test
         Vector v2 = new Vector(-2, -4, -6);
-        assertEquals(-28d, v1.dotProduct(v2), 0.00001, "dotProduct() wrong value");
+        assertEquals(-28, v1.dotProduct(v2), 0.00001, "dotProduct() wrong value");
 
         // =============== Boundary Values Tests ==================
         // TC11: dotProduct for orthogonal vectors
         Vector v3 = new Vector(0, 3, -2);
-        assertEquals(0d, v1.dotProduct(v3), 0.00001, "dotProduct() for orthogonal vectors is not zero");
+        assertEquals(0, v1.dotProduct(v3), 0.00001, "dotProduct() for orthogonal vectors is not zero");
     }
 
-    /** Test method for {@link primitives.Vector#crossProduct(primitives.Vector)}.
-    */
+    /** Test method for {@link primitives.Vector#crossProduct(primitives.Vector)}.*/
     @Test
     public void testCrossProduct() {
         Vector v1 = new Vector(1, 2, 3);
@@ -100,13 +100,13 @@ public class VectorTests {
         assertTrue(isZero(vr.dotProduct(v2)), "crossProduct() result is not orthogonal to 2nd operand");
 
         // =============== Boundary Values Tests ==================
-        // TC11: test zero vector from cross-productof co-lined vectors
+        // TC11: test zero vector from cross-product of co-lined vectors
         Vector v3 = new Vector(-2, -4, -6);
         assertThrows(IllegalArgumentException.class, () -> v1.crossProduct(v3),
                 "crossProduct() for parallel vectors does not throw an exception");
     }
-    /** Test method for {@link primitives.Vector#lengthSquared()}.
-    */
+
+    /** Test method for {@link primitives.Vector#lengthSquared()}.*/
     @Test
     public void testLengthSquared() {
         // ============ Equivalence Partitions Tests ==============
@@ -119,20 +119,19 @@ public class VectorTests {
     @Test
     public void testLength() {
         // TC01: Simple test
-        assertEquals(5d, new Vector(0, 3, 4).length(), 0.00001, "length() wrong value");
+        assertEquals(5, new Vector(0, 3, 4).length(), 0.00001, "length() wrong value");
     }
 
-    /** Test method for {@link Vector#normalize()}.
-    */
+    /** Test method for {@link Vector#normalize()}.*/
     @Test
     public void testNormalize() {
         Vector v = new Vector(0, 3, 4);
         Vector n = v.normalize();
         // ============ Equivalence Partitions Tests ==============
         // TC01: Simple test
-        assertEquals(1d, n.lengthSquared(), 0.00001, "wrong normalized vector length");
-        assertThrows(IllegalArgumentException.class,
-                () -> v.crossProduct(n),
+        assertEquals(1, n.lengthSquared(), 0.00001, "wrong normalized vector length");
+
+        assertThrows(IllegalArgumentException.class, () -> v.crossProduct(n),
                 "normalized vector is not iun the same direction");
         assertEquals(new Vector(0, 0.6, 0.8), n, "wrong normalized vector");
     }
