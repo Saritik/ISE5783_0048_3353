@@ -35,6 +35,15 @@ public class Ray {
      */
     public Vector getDir() { return dir; }
 
+    /**
+     * A function that gets a double and returns a point in the ray
+     * @param t the double that we received
+     * @return the point in the ray
+     */
+    public Point getPoint(double t){
+        return p0.add(dir.scale(t));
+    }
+
 
     /**
      * The equal method that we override to equal between a ray to an object

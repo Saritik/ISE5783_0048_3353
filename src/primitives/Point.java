@@ -65,6 +65,24 @@ public class Point {
     public Vector subtract(Point rhs){ return new Vector(xyz.subtract(rhs.xyz)); }
 
     /**
+     * A get function to return the x value
+     * @return a double (the x)
+     */
+    public double getX(){ return xyz.d1; }
+
+    /**
+     * A get function to return the y value
+     * @return a double (the y)
+     */
+    public double getY(){ return xyz.d2; }
+
+    /**
+     * A get function to return the z value
+     * @return a double (the z)
+     */
+    public double getZ(){ return xyz.d3; }
+
+    /**
      * The function returns the distance by square between our point to the point that
      we have received
      * @param point the point that we have received

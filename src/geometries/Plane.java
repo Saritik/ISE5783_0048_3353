@@ -1,6 +1,13 @@
 package geometries;
 import primitives.Point;
+import primitives.Ray;
+import primitives.Util;
 import primitives.Vector;
+
+import java.util.List;
+
+import static primitives.Util.alignZero;
+import static primitives.Util.isZero;
 
 /**
  * The class is represents a plane
@@ -49,6 +56,33 @@ public class Plane implements Geometry {
      * @return the normal of the plane
      */
     public Vector getNormal(){ return normal; }
+
+    @Override
+    public List<Point> findIntersections(Ray ray){
+        // we multiply (by scalar product) the normal with the vector of the ray
+        double nv = normal.dotProduct(ray.getDir());
+        if (isZero(nv))
+        {
+            return null;
+        }
+
+        try
+        {
+            // creating new vector that intersects the ray and the surface
+            Vector qSubtractP0 = q0.subtract(ray.getP0());
+            double t = alignZero((normal.dotProduct(qSubtractP0)) / nv);
+
+            if(t <= 0)
+            {
+                return null;
+            }
+            return List.of(ray.getPoint(t));
+        }
+        catch(Exception ex)
+        {
+            return null;
+        }
+    }
 
     /**
      * gets a point and calculates the normal to this point

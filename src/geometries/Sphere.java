@@ -1,7 +1,12 @@
 package geometries;
 
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
+
+import java.util.List;
+
+import static primitives.Util.alignZero;
 
 /**
  * A class that inherits from RadialGeometry class
@@ -27,6 +32,36 @@ public class Sphere extends RadialGeometry{
      * @return the center point of the sphere
      */
     public Point getCenter() { return center;}
+
+    @Override
+    public List<Point> findIntersections(Ray ray){
+        if (ray.getP0().equals(center)) // if the begin of the ray in the center, the point, is on the radius
+            return List.of(ray.getPoint(radius));
+        Vector u = center.subtract(ray.getP0());
+        double tM = alignZero(ray.getDir().dotProduct(u));
+        double d = alignZero(Math.sqrt(u.length() * u.length()- tM * tM));
+        double tH = alignZero(Math.sqrt(radius * radius - d * d));
+        double t1 = alignZero(tM + tH);
+        double t2 = alignZero(tM - tH);
+
+
+        if (d > radius)
+            return null; // there are no instructions
+
+
+        if (t1 <= 0 && t2 <= 0)
+            return null;
+
+        if (t1 > 0 && t2 > 0)
+            return List.of(ray.getPoint(t1), ray.getPoint(t2));
+
+        if (t1 > 0)
+        {
+            return List.of(ray.getPoint(t1));
+        }
+        else
+            return List.of(ray.getPoint(t2));
+    }
 
     /**
      * gets a point and calculates the normal to this point
