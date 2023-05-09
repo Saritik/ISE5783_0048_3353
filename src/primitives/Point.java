@@ -4,6 +4,8 @@ package primitives;
  * The class is represents a point in the space
  */
 public class Point {
+
+    public static final Point ZERO = new Point(Double3.ZERO);
     /**
      * Making an object of Double3 type
      */

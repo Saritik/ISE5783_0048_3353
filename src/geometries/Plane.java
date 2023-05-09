@@ -1,7 +1,7 @@
 package geometries;
+
 import primitives.Point;
 import primitives.Ray;
-import primitives.Util;
 import primitives.Vector;
 
 import java.util.List;
@@ -31,6 +31,7 @@ public class Plane implements Geometry {
     public Plane(Point p1, Point p2, Point p3){
         Vector v1 = p2.subtract(p1);
         Vector v2 = p3.subtract(p1);
+        // we multiply (by vector product) the two vectors to get the normal
         normal = v1.crossProduct(v2).normalize();
         q0 = p1;
     }
@@ -72,6 +73,7 @@ public class Plane implements Geometry {
             Vector qSubtractP0 = q0.subtract(ray.getP0());
             double t = alignZero((normal.dotProduct(qSubtractP0)) / nv);
 
+            // if the point is behind the camera
             if(t <= 0)
             {
                 return null;

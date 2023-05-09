@@ -57,12 +57,15 @@ public class Geometries implements Intersectable {
         for ( Intersectable geometry : Geometries)
         {
             List<Point> intersections = geometry.findIntersections(ray);
+            //if there are intersections add them to the list
             if (intersections != null)
                 points.addAll(intersections);
         }
 
+        //if there are no intersections return null
         if (points.isEmpty())
             return null;
+        //else return the list of intersections
         return points;
     }
 }

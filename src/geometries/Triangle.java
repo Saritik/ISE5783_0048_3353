@@ -26,6 +26,7 @@ public class Triangle extends Polygon{
     @Override
     public List<Point> findIntersections(Ray ray){
         List<Point> rayPoints = plane.findIntersections(ray);
+        //check if there is no intersection points
         if (rayPoints == null)
             return null;
 
@@ -40,11 +41,11 @@ public class Triangle extends Polygon{
 
 
         //The point is inside if all 𝒗 ∙ 𝑵𝒊 have the same sign (+/-)
-
         if (alignZero(n1.dotProduct(ray.getDir())) > 0 && alignZero(n2.dotProduct(ray.getDir())) > 0 && alignZero(n3.dotProduct(ray.getDir())) > 0)
         {
             return rayPoints;
         }
+        //The point is outside if all 𝒗 ∙ 𝑵𝒊 have the same sign (+/-)
         else if (alignZero(n1.dotProduct(ray.getDir())) < 0 && alignZero(n2.dotProduct(ray.getDir())) < 0 && alignZero(n3.dotProduct(ray.getDir())) < 0)
         {
             return rayPoints;
