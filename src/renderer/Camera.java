@@ -2,6 +2,8 @@ package renderer;
 
 import primitives.*;
 
+import java.util.MissingResourceException;
+
 import static primitives.Util.isZero;
 
 /**
@@ -15,6 +17,8 @@ public class Camera {
     private double height;
     private double width;
     private double distance;
+    private ImageWriter imageWriter;
+    private RayTracerBase rayTracer;
 
 
     /**
@@ -92,6 +96,110 @@ public class Camera {
     public Camera setVPDistance(double d) {
         distance = d;
         return this;
+    }
+
+    /**
+     * A function that sets the image writer
+     * @param image ImageWriter value
+     * @return the camera itself
+     * */
+    public Camera setImageWriter(ImageWriter image){
+        imageWriter = image;
+        return this;
+    }
+
+    /**
+     * A function that sets the ray tracer
+     * @param rayBase RayTracerBase value
+     * @return the camera itself
+     * */
+    public Camera setRayTracer(RayTracerBase rayBase){
+        rayTracer = rayBase;
+        return this;
+    }
+
+    /**
+     * A function that writes the image to the file
+     * */
+    public void writeToImage(){
+        //check if the fields have been initialized
+        if(p0 == null && vRight == null && vTo == null && vUp == null && imageWriter == null && rayTracer == null
+        && height < 0 && width < 0 && distance < 0){
+            throw new MissingResourceException("One or more necessary fields are null.", "Camera", "");
+        }
+        imageWriter.writeToImage();
+    }
+
+    /**
+     * A function that creates a grid of lines
+     * @author sarit silverstone and rivki adler
+     * @param interval int value
+     * @param color Color value
+     * */
+    public Camera printGrid(int interval, Color color){
+        if (imageWriter == null)
+            throw new MissingResourceException("this function must have values in all the fileds", "ImageWriter", "i");
+
+        for (int i = 0; i < imageWriter.getNx(); i++)
+        {
+            for (int j = 0; j < imageWriter.getNy(); j++)
+            {
+                if(i % interval == 0 || j % interval == 0)
+                    imageWriter.writePixel(i, j, color);
+            }
+        }
+        return this;
+    }
+
+    /**
+     * This function renders image's pixel color map from the scene included with
+     * the Renderer object
+     */
+    public Camera renderImage() {
+        try {
+            if (imageWriter == null) {
+                throw new MissingResourceException("missing resource", ImageWriter.class.getName(), "");
+            }
+            if (rayTracer == null) {
+                throw new MissingResourceException("missing resource", RayTracerBase.class.getName(), "");
+            }
+            int nX = imageWriter.getNx();
+            int nY = imageWriter.getNy();
+//            if (isMultithreading) {
+//                Pixel.initialize(nX, nY, 1);
+//                while (numOfThreads-- > 0) {
+//                    new Thread(() -> {
+//                        for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone())
+//                            castRay(nX, nY, pixel.row, pixel.col);
+//                    }).start();
+//                }
+//               Pixel.waitToFinish();
+//            } else {
+            //rendering the image
+            for (int i = 0; i < nY; i++) {
+                for (int j = 0; j < nX; j++) {
+                    castRay(nX, nY, i, j);
+                }
+            }
+//            }
+        } catch (MissingResourceException e) {
+            throw new UnsupportedOperationException("Not implemented yet" + e.getClassName());
+        }
+        return this;
+    }
+
+    /**
+     * Cast ray from camera in order to color a pixel
+     *
+     * @param nX   - resolution on X axis (number of pixels in row)
+     * @param nY   - resolution on Y axis (number of pixels in column)
+     * @param icol - pixel's column number (pixel index in row)
+     * @param jrow - pixel's row number (pixel index in column)
+     */
+    private void castRay(int nX, int nY, int icol, int jrow) {
+        Ray ray = constructRay(nX, nY, jrow, icol);
+        Color pixelColor = rayTracer.traceRay(ray);
+        imageWriter.writePixel(jrow, icol, pixelColor);
     }
 
     /**

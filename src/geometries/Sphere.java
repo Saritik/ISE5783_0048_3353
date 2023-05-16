@@ -45,7 +45,7 @@ public class Sphere extends RadialGeometry{
         double t2 = alignZero(tM - tH);
 
         // if the ray is outside the sphere
-        if (d > radius)
+        if (d >= radius)
             return null; // there are no instructions
 
         // if the ray is tangent to the sphere
