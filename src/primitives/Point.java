@@ -2,9 +2,13 @@ package primitives;
 
 /**
  * The class is represents a point in the space
+ * @author Sarit Tik 213230048 saritik16@gmail.com
+ * @author Hadas Zehevi 325543353 h0548510062@gmail.com
  */
 public class Point {
-
+    /**
+     * A constant point that represents the zero point
+     */
     public static final Point ZERO = new Point(Double3.ZERO);
     /**
      * Making an object of Double3 type

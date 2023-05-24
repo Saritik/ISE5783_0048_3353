@@ -5,8 +5,10 @@ import primitives.Vector;
 
 /**
  * An abstract class that implements the geometric interface
+ * @author Sarit Tik 213230048 saritik16@gmail.com
+ * @author Hadas Zehevi 325543353 h0548510062@gmail.com
  */
-public abstract class RadialGeometry implements Geometry {
+public abstract class RadialGeometry extends Geometry {
     /**
      * The radius of each geometry
      */

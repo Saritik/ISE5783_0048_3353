@@ -10,6 +10,8 @@ import static primitives.Util.alignZero;
 
 /**
  * A class that inherits from RadialGeometry class
+ * @author Sarit Tik 213230048 saritik16@gmail.com
+ * @author Hadas Zehevi 325543353 h0548510062@gmail.com
  */
 public class Sphere extends RadialGeometry{
     /**
@@ -34,9 +36,9 @@ public class Sphere extends RadialGeometry{
     public Point getCenter() { return center;}
 
     @Override
-    public List<Point> findIntersections(Ray ray){
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray){
         if (ray.getP0().equals(center)) // if the begin of the ray in the center, the point, is on the radius
-            return List.of(ray.getPoint(radius));
+            return List.of(new GeoPoint(this, ray.getPoint(radius)));
         Vector u = center.subtract(ray.getP0());
         double tM = alignZero(ray.getDir().dotProduct(u));
         double d = alignZero(Math.sqrt(u.length() * u.length()- tM * tM));
@@ -54,15 +56,15 @@ public class Sphere extends RadialGeometry{
 
         // if the ray is inside the sphere
         if (t1 > 0 && t2 > 0)
-            return List.of(ray.getPoint(t1), ray.getPoint(t2));
+            return List.of(new GeoPoint(this, ray.getPoint(t1)), new GeoPoint(this, ray.getPoint(t2)));
 
         // if the ray is on the sphere
         if (t1 > 0)
         {
-            return List.of(ray.getPoint(t1));
+            return List.of(new GeoPoint(this, ray.getPoint(t1)));
         }
         else
-            return List.of(ray.getPoint(t2));
+            return List.of(new GeoPoint(this, ray.getPoint(t2)));
     }
 
     /**

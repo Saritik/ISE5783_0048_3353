@@ -4,7 +4,11 @@ import primitives.Color;
 import primitives.Ray;
 import scene.Scene;
 
-/** A class that represent a ray tracer*/
+/**
+ * abstract class for ray tracer
+ * @author Sarit Tik 213230048 saritik16@gmail.com
+ * @author Hadas Zehevi 325543353 h0548510062@gmail.com
+ */
 public abstract class RayTracerBase {
     protected Scene scene;
     /**

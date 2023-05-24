@@ -8,6 +8,8 @@ import static primitives.Util.isZero;
 
 /**
  * A class that inherits from Tube class
+ * @author Sarit Tik 213230048 saritik16@gmail.com
+ * @author Hadas Zehevi 325543353 h0548510062@gmail.com
  */
 public class Cylinder extends Tube {
     /**

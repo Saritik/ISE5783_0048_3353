@@ -1,0 +1,65 @@
+package primitives;
+
+/**
+ * Material class represents the material of a geometry
+ * @author Sarit Tik 213230048 saritik16@gmail.com
+ * @author Hadas Zehevi 325543353 h0548510062@gmail.com
+ */
+public class Material {
+    // the specular coefficient of the material
+    public Double3 kS = Double3.ZERO;
+    // the diffuse coefficient of the material
+    public Double3 kD = Double3.ZERO;
+    // the shininess of the material
+    public int nShininess;
+
+    /**
+     * set the specular coefficient of the material
+     * @param kS the specular coefficient of the material
+     * @return the material
+     */
+    public Material setKs(Double3 kS){
+        this.kS = kS;
+        return this;
+    }
+
+    /**
+     * set the specular coefficient of the material
+     * @param kS the specular coefficient of the material
+     * @return the material
+     */
+    public Material setKs(double kS){
+        this.kS = new Double3(kS);
+        return this;
+    }
+
+    /**
+     * set the diffuse coefficient of the material
+     * @param kD the diffuse coefficient of the material
+     * @return the material
+     */
+    public Material setKd(Double3 kD){
+        this.kD = kD;
+        return this;
+    }
+
+    /**
+     * set the diffuse coefficient of the material
+     * @param kD the diffuse coefficient of the material
+     * @return the material
+     */
+    public Material setKd(double kD){
+        this.kD = new Double3(kD);
+        return this;
+    }
+
+    /**
+     * set the shininess of the material
+     * @param nShininess the shininess of the material
+     * @return the material
+     */
+    public Material setShininess(int nShininess){
+        this.nShininess = nShininess;
+        return this;
+    }
+}

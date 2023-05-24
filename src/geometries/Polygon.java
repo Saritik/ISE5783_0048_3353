@@ -1,14 +1,12 @@
 package geometries;
 
-import static primitives.Util.alignZero;
-import static primitives.Util.isZero;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
+
+import java.util.List;
+
+import static primitives.Util.isZero;
 
 /**
  * Polygon class represents two-dimensional polygon in 3D Cartesian coordinate
@@ -16,7 +14,7 @@ import primitives.Vector;
  *
  * @author Dan
  */
-public class Polygon implements Geometry {
+public class Polygon extends Geometry {
     /**
      * List of polygon's vertices
      */
@@ -90,7 +88,7 @@ public class Polygon implements Geometry {
     }
 
     @Override
-    public List<Point> findIntersections(Ray ray)
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray)
     {
         // TODO Auto-generated method stub
         return null;

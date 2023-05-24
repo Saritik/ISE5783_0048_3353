@@ -24,12 +24,11 @@ public class Triangle extends Polygon{
     }
 
     @Override
-    public List<Point> findIntersections(Ray ray){
-        List<Point> rayPoints = plane.findIntersections(ray);
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray){
+        List<GeoPoint> rayPoints = plane.findGeoIntersectionsHelper(ray);
         //check if there is no intersection points
         if (rayPoints == null)
             return null;
-
         //check if the point in out or on the triangle:
         Vector v1 = vertices.get(0).subtract(ray.getP0());
         Vector v2 = vertices.get(1).subtract(ray.getP0());
@@ -43,11 +42,13 @@ public class Triangle extends Polygon{
         //The point is inside if all 𝒗 ∙ 𝑵𝒊 have the same sign (+/-)
         if (alignZero(n1.dotProduct(ray.getDir())) > 0 && alignZero(n2.dotProduct(ray.getDir())) > 0 && alignZero(n3.dotProduct(ray.getDir())) > 0)
         {
+            rayPoints.get(0).geometry = this;
             return rayPoints;
         }
         //The point is outside if all 𝒗 ∙ 𝑵𝒊 have the same sign (+/-)
         else if (alignZero(n1.dotProduct(ray.getDir())) < 0 && alignZero(n2.dotProduct(ray.getDir())) < 0 && alignZero(n3.dotProduct(ray.getDir())) < 0)
         {
+            rayPoints.get(0).geometry = this;
             return rayPoints;
         }
         if (isZero(n1.dotProduct(ray.getDir())) || isZero(n2.dotProduct(ray.getDir())) || isZero(n3.dotProduct(ray.getDir())))

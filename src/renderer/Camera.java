@@ -8,8 +8,11 @@ import static primitives.Util.isZero;
 
 /**
  * Camera class represents a camera in the 3D space
+ * @author Sarit Tik 213230048 saritik16@gmail.com
+ * @author Hadas Zehevi 325543353 h0548510062@gmail.com
  */
 public class Camera {
+    // camera position
     private Point p0;
     private Vector vTo;
     private Vector vUp;
@@ -152,17 +155,20 @@ public class Camera {
     }
 
     /**
-     * This function renders image's pixel color map from the scene included with
-     * the Renderer object
+     * A function that construct a camera through the view plane
+     * @return the camera itself
      */
     public Camera renderImage() {
         try {
+            //check if the fields have been initialized
             if (imageWriter == null) {
                 throw new MissingResourceException("missing resource", ImageWriter.class.getName(), "");
             }
+            //check if the fields have been initialized
             if (rayTracer == null) {
                 throw new MissingResourceException("missing resource", RayTracerBase.class.getName(), "");
             }
+
             int nX = imageWriter.getNx();
             int nY = imageWriter.getNy();
 //            if (isMultithreading) {
@@ -175,7 +181,8 @@ public class Camera {
 //                }
 //               Pixel.waitToFinish();
 //            } else {
-            //rendering the image
+
+            //for each pixel in the view plane
             for (int i = 0; i < nY; i++) {
                 for (int j = 0; j < nX; j++) {
                     castRay(nX, nY, i, j);

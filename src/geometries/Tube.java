@@ -8,6 +8,8 @@ import java.util.List;
 
 /**
  * A class that inherits from RadialGeometry class
+ * @author Sarit Tik 213230048 saritik16@gmail.com
+ * @author Hadas Zehevi 325543353 h0548510062@gmail.com
  */
 public class Tube extends RadialGeometry{
     /**
@@ -52,7 +54,7 @@ public class Tube extends RadialGeometry{
     }
 
     @Override
-    public List<Point> findIntersections(Ray ray){
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray){
         // TODO Auto-generated method stub
         return null;
     }

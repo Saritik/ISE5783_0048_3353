@@ -1,9 +1,13 @@
 package primitives;
 
+import geometries.Intersectable;
+import geometries.Intersectable.GeoPoint;
 import java.util.List;
 
 /**
- * The class is represents a ray
+ * The class is representing a ray
+ * @author Sarit Tik 213230048 saritik16@gmail.com
+ * @author Hadas Zehevi 325543353 h0548510062@gmail.com
  */
 public class Ray {
     /**
@@ -51,20 +55,32 @@ public class Ray {
      * @param points the list of points that we received
      * @return the closest point to the ray
      */
-    public Point  findClosestPoint(List<Point> points){
-        // if the list is empty
-        if(points == null)
+    public Point findClosestPoint(List<Point> points) {
+        return points == null || points.isEmpty() ? null
+                : findClosestGeoPoint(points.stream().map(p -> new GeoPoint(null, p)).toList()).point;
+    }
+
+    /**
+     * A function that gets a list of points and returns the closest point to the ray
+     * @param intersections the list of points that we received
+     * @return the closest point to the ray
+     */
+    public GeoPoint findClosestGeoPoint(List<GeoPoint> intersections){
+        //if there are no intersections
+        if(intersections == null)
             return null;
 
-        // if the list is not empty
-        Point closest = points.get(0);
-        // go over the list and find the closest point
-        for (Point point : points)
+        //if there is only one intersection
+        Intersectable.GeoPoint closet = intersections.get(0);
+        //if there are more than one intersection
+        for (GeoPoint geoPoint : intersections)
         {
-            if(point.distance(p0) < closest.distance(p0))
-                closest = point;
+            //if the distance between the point and the ray is smaller than the distance between the closet point and the ray
+            if(geoPoint.point.distance(p0) < closet.point.distance(p0))
+                closet= geoPoint;
+
         }
-        return closest;
+        return closet;
     }
 
 
