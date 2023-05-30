@@ -61,26 +61,27 @@ public class Plane extends Geometry {
     public Vector getNormal(){ return normal; }
 
     @Override
-    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray){
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance){
         // we multiply (by scalar product) the normal with the vector of the ray
         double nv = normal.dotProduct(ray.getDir());
-        if (isZero(nv))
-        {
-            return null;
-        }
+        if (isZero(nv)) return null;
 
         try
         {
             // creating new vector that intersects the ray and the surface
             Vector qSubtractP0 = q0.subtract(ray.getP0());
+            Point result = null;
             double t = alignZero((normal.dotProduct(qSubtractP0)) / nv);
 
-            // if the point is behind the camera
-            if(t <= 0)
-            {
-                return null;
+            if(alignZero(maxDistance - t) > 0) {
+                // if the point is behind the camera
+                if (t > 0 && Double.isFinite(t)) {
+                    result = ray.getPoint(t);
+                }
             }
-            return List.of(new GeoPoint(this, ray.getPoint(t)));
+            if(result == null) return null;
+
+            return List.of(new GeoPoint(this, result));
         }
         catch(Exception ex)
         {

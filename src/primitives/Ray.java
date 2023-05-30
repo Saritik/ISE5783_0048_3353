@@ -1,7 +1,7 @@
 package primitives;
 
-import geometries.Intersectable;
 import geometries.Intersectable.GeoPoint;
+
 import java.util.List;
 
 /**
@@ -31,7 +31,7 @@ public class Ray {
 
     /**
      * A get function to return the point of the ray
-     * @returnthe point of the ray
+     * @return the point of the ray
      */
     public Point getP0(){ return p0; }
 
@@ -70,14 +70,13 @@ public class Ray {
         if(intersections == null)
             return null;
 
-        //if there is only one intersection
-        Intersectable.GeoPoint closet = intersections.get(0);
+        GeoPoint closet = intersections.get(0);
         //if there are more than one intersection
         for (GeoPoint geoPoint : intersections)
         {
             //if the distance between the point and the ray is smaller than the distance between the closet point and the ray
             if(geoPoint.point.distance(p0) < closet.point.distance(p0))
-                closet= geoPoint;
+                closet = geoPoint;
 
         }
         return closet;

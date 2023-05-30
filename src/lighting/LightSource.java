@@ -14,11 +14,13 @@ public interface LightSource {
      * @param p the point of the geometry
      * @return the intensity of the light in the point
      */
-    public Color getIntensity(Point p);
+    Color getIntensity(Point p);
 
     /**
      * @param p the point of the geometry
      * @return the vector from the light source to the point
      */
-    public Vector getL(Point p);
+    Vector getL(Point p);
+
+    double getDistance(Point point);
 }

@@ -6,6 +6,7 @@ import primitives.*;
 import scene.Scene;
 
 import java.util.List;
+
 import static primitives.Util.alignZero;
 import static primitives.Util.isZero;
 
@@ -18,6 +19,9 @@ import static primitives.Util.isZero;
  * @author Hadas Zehevi 325543353 h0548510062@gmail.com
  */
 public class RayTracerBasic extends RayTracerBase{
+
+    private static final double DELTA = 0.1;
+
     /**
      * constructor of RayTracerBasic
      *
@@ -25,6 +29,31 @@ public class RayTracerBasic extends RayTracerBase{
      * @param scene Scene value
      */
     public RayTracerBasic(Scene scene){ super(scene); }
+
+    private boolean unshaded(GeoPoint gp, LightSource lightSource, Vector l, Vector n, double nv){
+        Vector lightDirection = l.scale(-1); // from point to light source
+
+        Vector epsVector = n.scale(nv < 0 ? DELTA : -DELTA);
+        Point point = gp.point.add(epsVector);
+        Ray lightRay = new Ray(point, lightDirection);
+        double maxDistance = lightSource.getDistance(gp.point);
+
+        List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay, maxDistance);
+        if(intersections == null) return true;
+
+        int count = intersections.size();
+
+        for(GeoPoint geoPoint : intersections){
+            double distance = gp.point.distance(geoPoint.point);
+            if(distance >= maxDistance){
+                intersections.remove(geoPoint);
+                count--;
+            }
+        }
+
+        return intersections.isEmpty() || count == 0;
+    }
+
 
     /**
      * a function that calculates thr diffusive light
@@ -78,10 +107,12 @@ public class RayTracerBasic extends RayTracerBase{
             double nl = alignZero(n.dotProduct(l));
             //if the dot product is zero, the point is not visible
             if(nl * nv > 0){
-                //the intensity of the light source
-                Color lightIntensity = lightSource.getIntensity(geoPoint.point);
-                color = color.add(lightIntensity.scale(calcDiffusive(material, nl)),
-                        lightIntensity.scale(calcSpecular(material, n, l, nl, vector)));
+                if(unshaded(geoPoint, lightSource,l, n, nv)) {
+                    //the intensity of the light source
+                    Color lightIntensity = lightSource.getIntensity(geoPoint.point);
+                    color = color.add(lightIntensity.scale(calcDiffusive(material, nl)),
+                            lightIntensity.scale(calcSpecular(material, n, l, nl, vector)));
+                }
             }
         }
         return color;
@@ -90,7 +121,7 @@ public class RayTracerBasic extends RayTracerBase{
     /**
      * a function that returns the color of a point
      * @author sarit silverstone and rivki adler
-     * @param intersection
+     * @param intersection GeoPoint value
      */
     private Color calcColor(GeoPoint intersection, Ray ray){
         return scene.ambientLight.getIntensity().

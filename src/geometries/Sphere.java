@@ -36,9 +36,15 @@ public class Sphere extends RadialGeometry{
     public Point getCenter() { return center;}
 
     @Override
-    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray){
-        if (ray.getP0().equals(center)) // if the begin of the ray in the center, the point, is on the radius
-            return List.of(new GeoPoint(this, ray.getPoint(radius)));
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance){
+        List<GeoPoint> result = null;
+        if (ray.getP0().equals(center)) {// if the begin of the ray in the center, the point, is on the radius
+            if(alignZero(radius - maxDistance) <= 0) {
+                return List.of(new GeoPoint(this, ray.getPoint(radius)));
+            }
+            return null;
+        }
+
         Vector u = center.subtract(ray.getP0());
         double tM = alignZero(ray.getDir().dotProduct(u));
         double d = alignZero(Math.sqrt(u.length() * u.length()- tM * tM));
@@ -55,16 +61,27 @@ public class Sphere extends RadialGeometry{
             return null;
 
         // if the ray is inside the sphere
-        if (t1 > 0 && t2 > 0)
-            return List.of(new GeoPoint(this, ray.getPoint(t1)), new GeoPoint(this, ray.getPoint(t2)));
+        if (t1 > 0 && t2 > 0) {
+            if(alignZero(t2 - maxDistance) <= 0 && alignZero(t1 - maxDistance) <= 0 ){
+                return List.of(new GeoPoint(this, ray.getPoint(t1)), new GeoPoint(this, ray.getPoint(t2)));
+            }
+            return null;
+        }
 
         // if the ray is on the sphere
         if (t1 > 0)
         {
-            return List.of(new GeoPoint(this, ray.getPoint(t1)));
+            if(alignZero(t1 - maxDistance) <= 0) {
+                return List.of(new GeoPoint(this, ray.getPoint(t1)));
+            }
+            return null;
         }
-        else
-            return List.of(new GeoPoint(this, ray.getPoint(t2)));
+        else {
+            if(alignZero(t2 - maxDistance) <= 0) {
+                return List.of(new GeoPoint(this, ray.getPoint(t2)));
+            }
+            return null;
+        }
     }
 
     /**
