@@ -37,7 +37,7 @@ public class Sphere extends RadialGeometry{
 
     @Override
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance){
-        List<GeoPoint> result = null;
+
         if (ray.getP0().equals(center)) {// if the begin of the ray in the center, the point, is on the radius
             if(alignZero(radius - maxDistance) <= 0) {
                 return List.of(new GeoPoint(this, ray.getPoint(radius)));
@@ -46,42 +46,43 @@ public class Sphere extends RadialGeometry{
         }
 
         Vector u = center.subtract(ray.getP0());
-        double tM = alignZero(ray.getDir().dotProduct(u));
-        double d = alignZero(Math.sqrt(u.length() * u.length()- tM * tM));
-        double tH = alignZero(Math.sqrt(radius * radius - d * d));
-        double t1 = alignZero(tM + tH);
-        double t2 = alignZero(tM - tH);
+        double tM = alignZero(u.dotProduct(ray.getDir()));
+        double d = alignZero(u.lengthSquared() - tM * tM);
+        double tH = alignZero(Math.sqrt(radius * radius - d));
+        double t1 = alignZero(tM - tH);
+        double t2 = alignZero(tM + tH);
 
         // if the ray is outside the sphere
-        if (d >= radius)
+        if (d >= radius * radius)
             return null; // there are no instructions
 
-        // if the ray is tangent to the sphere
-        if (t1 <= 0 && t2 <= 0)
-            return null;
-
-        // if the ray is inside the sphere
-        if (t1 > 0 && t2 > 0) {
-            if(alignZero(t2 - maxDistance) <= 0 && alignZero(t1 - maxDistance) <= 0 ){
-                return List.of(new GeoPoint(this, ray.getPoint(t1)), new GeoPoint(this, ray.getPoint(t2)));
-            }
+        if(t2 <= 0){
             return null;
         }
 
-        // if the ray is on the sphere
-        if (t1 > 0)
-        {
-            if(alignZero(t1 - maxDistance) <= 0) {
-                return List.of(new GeoPoint(this, ray.getPoint(t1)));
-            }
-            return null;
-        }
-        else {
+        if(t1 <= 0){
+
             if(alignZero(t2 - maxDistance) <= 0) {
                 return List.of(new GeoPoint(this, ray.getPoint(t2)));
             }
-            return null;
         }
+        else{
+            // if the ray is inside the sphere
+            if(alignZero(t2 - maxDistance) <= 0 && alignZero(t1 - maxDistance) <= 0 ){
+                return List.of(new GeoPoint(this, ray.getPoint(t1)), new GeoPoint(this, ray.getPoint(t2)));
+            }
+            //if the ray is on the sphere
+            else if(alignZero( maxDistance-t1) > 0) {
+                return List.of(new GeoPoint(this, ray.getPoint(t1)));
+            }
+            else{
+                if(alignZero(t2 - maxDistance) <= 0) {
+                    return List.of(new GeoPoint(this, ray.getPoint(t2)));
+                }
+            }
+
+        }
+        return null;
     }
 
     /**
