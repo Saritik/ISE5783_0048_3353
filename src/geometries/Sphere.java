@@ -47,42 +47,41 @@ public class Sphere extends RadialGeometry{
 
         Vector u = center.subtract(ray.getP0());
         double tM = alignZero(u.dotProduct(ray.getDir()));
-        double d = alignZero(u.lengthSquared() - tM * tM);
-        double tH = alignZero(Math.sqrt(radius * radius - d));
-        double t1 = alignZero(tM - tH);
-        double t2 = alignZero(tM + tH);
+        double d = alignZero(Math.sqrt(u.lengthSquared() - tM * tM));
+        double tH = alignZero(Math.sqrt(radius * radius - d * d));
+        double t1 = alignZero(tM + tH);
+        double t2 = alignZero(tM - tH);
 
         // if the ray is outside the sphere
-        if (d >= radius * radius)
+        if (d > radius)
             return null; // there are no instructions
 
-        if(t2 <= 0){
+        // if the ray is tangent to the sphere
+        if (t2 <= 0 && t1 <= 0)
             return null;
-        }
 
-        if(t1 <= 0){
-
-            if(alignZero(t2 - maxDistance) <= 0) {
-                return List.of(new GeoPoint(this, ray.getPoint(t2)));
-            }
-        }
-        else{
-            // if the ray is inside the sphere
+        if(t1 >0 && t2 > 0){
             if(alignZero(t2 - maxDistance) <= 0 && alignZero(t1 - maxDistance) <= 0 ){
                 return List.of(new GeoPoint(this, ray.getPoint(t1)), new GeoPoint(this, ray.getPoint(t2)));
             }
-            //if the ray is on the sphere
-            else if(alignZero( maxDistance-t1) > 0) {
+        }
+
+        //if the ray is on the sphere
+        if (t1 > 0)
+        {
+            // if the ray is inside the sphere
+            if(alignZero(t1 - maxDistance) <= 0) {
                 return List.of(new GeoPoint(this, ray.getPoint(t1)));
             }
-            else{
-                if(alignZero(t2 - maxDistance) <= 0) {
-                    return List.of(new GeoPoint(this, ray.getPoint(t2)));
-                }
-            }
-
+            return null;
         }
-        return null;
+        else {
+            if(alignZero(t2 - maxDistance) <= 0) {
+                return List.of(new GeoPoint(this, ray.getPoint(t2)));
+            }
+            return null;
+        }
+
     }
 
     /**
