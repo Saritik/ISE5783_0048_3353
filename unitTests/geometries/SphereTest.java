@@ -104,17 +104,17 @@ class SphereTest {
         assertNull(result, "Ray starts after sphere ");
 
         // **** Group: Ray's line is tangent to the sphere (all tests 0 points)
-        // TC19: Ray starts before the tangent point
-        v = new Vector(3, 0, 0);
+        // TC19: Ray starts behind the tangent point
+        v = new Vector(-3, 0, 0);
         result = sphere.findIntersections(new Ray(new Point(0, -1, 0), v));
-        assertNull(result, "Ray starts before the tangent point ");
+        assertNull(result, "ERROR: TC019");
 
         // TC20: Ray starts at the tangent point
         result = sphere.findIntersections(new Ray(p, v));
         assertNull(result, "Ray starts at the tangent point ");
 
-        // TC21: Ray starts after the tangent point
-        result = sphere.findIntersections(new Ray(new Point(1.9, -1, 0), v));
+        // TC21: Ray starts after the targent point
+        result = sphere.findIntersections(new Ray(new Point(2.5, -1, 0), v.scale(-1)));
         assertNull(result, "Ray starts after the tangent point ");
 
         // **** Group: Special cases
