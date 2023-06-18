@@ -10,6 +10,9 @@ import java.util.List;
  * @author Hadas Zehevi 325543353 h0548510062@gmail.com
  */
 public class Ray {
+	
+	private static final double DELTA = 0.00001; // Small value used for offset the ray origin
+	
     /**
      * presents a point in a ray
      */
@@ -28,6 +31,23 @@ public class Ray {
         p0 = point;
         dir = vector.normalize();
     }
+    
+    /**
+	 * Constructs a new ray with a start point, direction, and normal vector.
+	 *
+	 * @param point     The start point of the ray.
+	 * @param direction The direction vector of the ray.
+	 * @param normal    The normal vector used to move the start point.
+	 */
+	public Ray(Point point, Vector direction, Vector normal) {
+		// point + normal.scale(±DELTA)
+		this.dir = direction.normalize();
+
+		double nv = normal.dotProduct(direction);
+
+		Vector normalDelta = normal.scale((nv > 0 ? DELTA : -DELTA));
+		p0 = point.add(normalDelta);
+	}
 
     /**
      * A get function to return the point of the ray
