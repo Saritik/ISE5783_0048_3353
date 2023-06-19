@@ -22,5 +22,9 @@ public interface LightSource {
      */
     Vector getL(Point p);
 
+    /**
+     * @param point the point of the geometry
+     * @return the distance between the light source and the point
+     */
     double getDistance(Point point);
 }

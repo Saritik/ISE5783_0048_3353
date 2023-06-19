@@ -2,7 +2,10 @@ package primitives;
 
 import geometries.Intersectable.GeoPoint;
 
+import java.util.LinkedList;
 import java.util.List;
+
+import static primitives.Util.*;
 
 /**
  * The class is representing a ray
@@ -10,6 +13,12 @@ import java.util.List;
  * @author Hadas Zehevi 325543353 h0548510062@gmail.com
  */
 public class Ray {
+
+    /**
+     * Small value used for offset the ray origin
+     */
+	private static final double DELTA = 0.00001; // Small value used for offset the ray origin
+	
     /**
      * presents a point in a ray
      */
@@ -28,6 +37,23 @@ public class Ray {
         p0 = point;
         dir = vector.normalize();
     }
+    
+    /**
+	 * Constructs a new ray with a start point, direction, and normal vector.
+	 *
+	 * @param point     The start point of the ray.
+	 * @param direction The direction vector of the ray.
+	 * @param normal    The normal vector used to move the start point.
+	 */
+	public Ray(Point point, Vector direction, Vector normal) {
+		// point + normal.scale(±DELTA)
+		this.dir = direction.normalize();
+
+		double nv = normal.dotProduct(direction);
+
+		Vector normalDelta = normal.scale((nv > 0 ? DELTA : -DELTA));
+		p0 = point.add(normalDelta);
+	}
 
     /**
      * A get function to return the point of the ray
@@ -103,5 +129,75 @@ public class Ray {
     @Override
     public String toString() {
         return p0.toString() + "\n" + dir.toString();
+    }
+    
+    /**
+     * get point on the ray
+     *
+     * @param length distance from the start of the ray
+     * @return new Point3D
+     */
+    public Point getTargetPoint(double length) {
+        return isZero(length) ? p0 : p0.add(dir.scale(length));
+    }
+
+    /**
+     * generate beam of rays from the ray
+     *
+     * @param n normal to the point
+     * @param radius radius of the beam
+     * @param distance distance from the start of the ray
+     * @param numOfRays number of rays in the beam
+     * @return list of rays
+     */
+    public List<Ray> generateBeam(Vector n, double radius, double distance, int numOfRays) {
+        List<Ray> rays = new LinkedList<Ray>();
+        rays.add(this);// Including the main ray
+        if (numOfRays == 1 || isZero(radius))// The component (glossy surface /diffuse glass) is turned off
+            return rays;
+
+        // the 2 vectors that create the virtual grid for the beam
+        Vector nX = dir.createNormal();
+        Vector nY = dir.crossProduct(nX);
+
+        Point centerCircle = this.getTargetPoint(distance);
+        Point randomPoint;
+        Vector v12 ;
+
+
+        double rand_x, rand_y,delta_radius=radius/(numOfRays-1);
+        // the angle between the normal and the ray
+        double nv = n.dotProduct(dir);
+
+        // if the normal is orthogonal to the ray
+        for (int i = 1; i < numOfRays; i++) {
+            randomPoint=centerCircle;
+            rand_x=random(-radius,radius);
+            //rand_y=random(-radius,radius);
+            rand_y=randomSign()* Math.sqrt(radius*radius-rand_x*rand_x);
+
+            try {
+                randomPoint = randomPoint.add(nX.scale(rand_x));
+            }
+            catch (Exception ex){}
+
+            try {
+                randomPoint = randomPoint.add(nY.scale(rand_y));
+            }
+            catch (Exception ex){}
+
+
+
+            v12 = randomPoint.subtract(p0).normalize();
+
+            double nt = alignZero(n.dotProduct(v12));
+
+            if (nv * nt > 0) {
+                rays.add(new Ray(p0, v12));
+            }
+            radius-=delta_radius;
+        }
+
+        return rays;
     }
 }

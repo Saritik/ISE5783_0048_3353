@@ -14,6 +14,14 @@ public class Material {
     public Double3 kR = Double3.ZERO;
     // the shininess of the material
     public int nShininess;
+    
+
+    //blur glass
+    //all parameters for the beam
+    public int numOfRays=1;
+    public double blurGlassDistance=1,blurGlassRadius=1;
+
+
 
     /**
      * set the specular coefficient of the material
@@ -55,21 +63,41 @@ public class Material {
         return this;
     }
 
+    /**
+     * set the transparency coefficient of the material
+     * @param kT the transparency coefficient of the material
+     * @return the material
+     */
     public Material setKt(Double3 kT){
         this.kT = kT;
         return this;
     }
 
+    /**
+     * set the transparency coefficient of the material
+     * @param kT the transparency coefficient of the material
+     * @return the material
+     */
     public Material setKt(double kT){
         this.kT = new Double3(kT);
         return this;
     }
 
+    /**
+     * set the reflection coefficient of the material
+     * @param kR the reflection coefficient of the material
+     * @return the material
+     */
     public Material setKr(Double3 kR){
         this.kR = kR;
         return this;
     }
 
+    /**
+     * set the reflection coefficient of the material
+     * @param kR the reflection coefficient of the material
+     * @return the material
+     */
     public Material setKr(double kR){
         this.kR = new Double3(kR);
         return this;
@@ -84,4 +112,18 @@ public class Material {
         this.nShininess = nShininess;
         return this;
     }
+
+    /*
+    public Material setBlurGlass(int numOfRays, double distance ,double radius) {
+
+        if(numOfRays<1 || distance<=0 ||  radius<=0)
+            throw new IllegalArgumentException("illegal argument in setBlurGlass ");
+
+        this.numOfRays = numOfRays;
+        this.blurGlassDistance=distance;
+        this.blurGlassRadius = radius;
+
+        return this;
+    }
+     */
 }
