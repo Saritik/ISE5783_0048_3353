@@ -14,6 +14,14 @@ public class Material {
     public Double3 kR = Double3.ZERO;
     // the shininess of the material
     public int nShininess;
+    
+
+    //blur glass
+    //all parameters for the beam
+    public int numOfRays=1;
+    public double blurGlassDistance=1,blurGlassRadius=1;
+
+
 
     /**
      * set the specular coefficient of the material
@@ -84,4 +92,16 @@ public class Material {
         this.nShininess = nShininess;
         return this;
     }
+    public Material setBlurGlass(int numOfRays, double distance ,double radius) {
+
+        if(numOfRays<1 || distance<=0 ||  radius<=0)
+            throw new IllegalArgumentException("illegal argument in setBlurGlass ");
+
+        this.numOfRays = numOfRays;
+        this.blurGlassDistance=distance;
+        this.blurGlassRadius = radius;
+
+        return this;
+    }
+
 }

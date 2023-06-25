@@ -1,4 +1,7 @@
 package primitives;
+
+import static primitives.Util.isZero;
+
 /**
  * The class is representing a vector
  * @author Sarit Tik 213230048 saritik16@gmail.com
@@ -76,6 +79,17 @@ public class Vector extends Point {
                 (this.xyz.d1 * vector.xyz.d2) - (this.xyz.d2 * vector.xyz.d1));
     }
 
+    /**
+     * create vector  normal to this vector
+     * @return
+     */
+    public Vector createNormal() {
+        if (isZero(this.getX()))
+            return new Vector(1, 0, 0);
+
+        return new Vector(this.getY(), -this.getX(), 0).normalize();
+    }
+    
     /**
      * Calculates the length of the vector by square
      * @return the length of the vector by square

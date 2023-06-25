@@ -6,6 +6,8 @@ import primitives.Vector;
 
 import java.util.List;
 
+import geometries.Intersectable.GeoPoint;
+
 import static primitives.Util.isZero;
 
 /**
@@ -87,11 +89,49 @@ public class Polygon extends Geometry {
         }
     }
 
-    @Override
-    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance)
-    {
-        // TODO Auto-generated method stub
-        return null;
+	@Override
+    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
+
+		   if(!boundingBox.intersectionBox(ray))
+	            return null;
+
+         //get Intersections of plane
+        List<GeoPoint> planeIntersections = plane.findGeoIntersections(ray, maxDistance);
+        if (planeIntersections == null) return null;
+
+        Point p0 = ray.getP0();
+        Vector rayDir = ray.getDir();
+
+        //all the vectors ( (v1-p0)x(v2-p0) ) * (ray dir)  should be the same signe
+        // else the ray outside the polygon
+
+        //first check the sign of dot product the last and the first
+        Vector v1 = vertices.get(0).subtract(p0);
+        Vector v2 = vertices.get(vertices.size() - 1).subtract(p0);
+
+        double s1 = rayDir.dotProduct(v2.crossProduct(v1));
+
+        //if the ray cross in the edge of the polygon
+        if (isZero(s1)) return null;
+
+        //keep the next product
+        double s2;
+        for (var vertex : vertices.subList(1, vertices.size())) {
+
+            v2 = vertex.subtract(p0);
+            s2 = rayDir.dotProduct(v1.crossProduct(v2));
+
+            //if the ray cross in the edge of the polygon
+            if (isZero(s2)) return null;
+
+            //if they not the same sign
+            if (s1 * s2 < 0)
+                return null;
+
+            v1 = v2;
+        }
+
+        return planeIntersections.stream().map(gp -> new GeoPoint(this, gp.point)).toList();
     }
 
     @Override

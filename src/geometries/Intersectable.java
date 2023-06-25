@@ -1,5 +1,6 @@
 package geometries;
 
+import primitives.BoundingBox;
 import primitives.Point;
 import primitives.Ray;
 
@@ -11,6 +12,10 @@ import java.util.List;
  * @author Hadas Zehevi 325543353 h0548510062@gmail.com
  */
 public abstract class Intersectable {
+	
+	
+    protected BoundingBox boundingBox = new BoundingBox();
+
     /**
      * A method that finds the intersections of a ray with the geometry
      * @param ray the ray that we want to find the intersections with

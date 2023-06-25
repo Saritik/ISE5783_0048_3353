@@ -62,6 +62,10 @@ public class Plane extends Geometry {
 
     @Override
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance){
+    	
+    	   if(!this.boundingBox.intersectionBox(ray))
+	            return null;
+    	   
         // we multiply (by scalar product) the normal with the vector of the ray
         double nv = normal.dotProduct(ray.getDir());
         if (isZero(nv)) return null;
