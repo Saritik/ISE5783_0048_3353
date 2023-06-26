@@ -182,8 +182,7 @@ public class ReflectionRefractionTests {
 
 		Vector vTo = new Vector(0, 1, 0);
 		Camera camera = new Camera(new Point(0, -230, 0).add(vTo.scale(-13)), vTo, new Vector(0, 0, 1))
-				.setVPSize(200d, 200).setVPDistance(1000);
-		;
+				.setVPSize(200d, 200d).setVPDistance(1000);
 
 		scene.setAmbientLight(new AmbientLight(new Color(gray).reduce(2), new Double3(0.15)));
 
@@ -192,8 +191,9 @@ public class ReflectionRefractionTests {
 					new Sphere(new Point(5 * i, -1.50, -3), 3).setEmission(new Color(red).reduce(4).reduce(2.2))
 							.setMaterial(new Material().setKd(0.2).setKs(1).setShininess(80).setKt(0)),
 
-					new Sphere(new Point(5 * i, 5, 3), 3).setEmission(new Color(green).reduce(2.2))
+					new Sphere(new Point(5 * i, 5, 3), 3).setEmission(new Color(green).reduce(1.1))
 							.setMaterial(new Material().setKd(0.2).setKs(1).setShininess(80).setKt(0)),
+
 					new Sphere(new Point(5 * i, -8, -8), 3).setEmission(new Color(yellow).reduce(2.2))
 							.setMaterial(new Material().setKd(0.2).setKs(1).setShininess(80).setKt(0)),
 
@@ -208,16 +208,14 @@ public class ReflectionRefractionTests {
 		scene.geometries.add(new Plane(new Point(1, 10, 1), new Point(2, 10, 1), new Point(5, 10, 0))
 				.setEmission(new Color(white).reduce(3))
 				.setMaterial(new Material().setKd(0.2).setKs(0).setShininess(0).setKt(0))
-
 		);
 
-		// scene.lights.add(new PointLight(new Color(100, 100, 150), new Point(0, 6,
-		// 0)));
+		// scene.lights.add(new PointLight(new Color(100, 100, 150), new Point(0, 60)));
 		scene.lights.add(new DirectionalLight(new Color(white).reduce(1.3), new Vector(-0.4, 1, 0)));
 		scene.lights.add(new SpotLight(new Color(white).reduce(2), new Point(20.43303, -7.37104, 13.77329),
 				new Vector(-20.43, 7.37, -13.77)).setKl(0.6));
 
-		ImageWriter imageWriter = new ImageWriter("blurryGlass2", 1000, 1000);
+		ImageWriter imageWriter = new ImageWriter("blurryGlass2", 500, 500);
 		camera.setImageWriter(imageWriter) //
 				.setRayTracer(new RayTracerBasic(scene)) //
 				.renderImage() //

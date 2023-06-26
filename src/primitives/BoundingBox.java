@@ -116,12 +116,6 @@ public class BoundingBox {
      * @param r the ray to check for intersection
      * @return true if the ray intersects with the bounding box, false otherwise
      */
-    /**
-     * Checks if the given ray intersects with the bounding box.
-     *
-     * @param r the ray to check for intersection
-     * @return true if the ray intersects with the bounding box, false otherwise
-     */
     public boolean intersectionBox(Ray r) {
         double tMin, tMax;
 
@@ -216,5 +210,4 @@ public class BoundingBox {
 
         return true;
     }
-
 }

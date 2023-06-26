@@ -2,10 +2,7 @@ package primitives;
 
 import geometries.Intersectable.GeoPoint;
 
-import static primitives.Util.alignZero;
-import static primitives.Util.isZero;
-import static primitives.Util.random;
-import static primitives.Util.randomSign;
+import static primitives.Util.*;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -142,7 +139,7 @@ public class Ray {
     }
     
     public List<Ray> generateBeam(Vector n, double radius, double distance, int numOfRays) {
-        List<Ray> rays = new LinkedList<Ray>();
+        List<Ray> rays = new LinkedList<>();
         rays.add(this);// Including the main ray
         if (numOfRays == 1 || isZero(radius))// The component (glossy surface /diffuse glass) is turned off
             return rays;
@@ -156,13 +153,13 @@ public class Ray {
         Vector v12 ;
 
 
-        double rand_x, rand_y,delta_radius=radius/(numOfRays-1);
+        double rand_x, rand_y,delta_radius = radius / (numOfRays - 1);
         double nv = n.dotProduct(dir);
 
         for (int i = 1; i < numOfRays; i++) {
-            randomPoint=centerCircle;
-            rand_x=random(-radius,radius);
-            rand_y=randomSign()* Math.sqrt(radius*radius-rand_x*rand_x);
+            randomPoint = centerCircle;
+            rand_x = random(-radius, radius);
+            rand_y = randomSign() * Math.sqrt(radius * radius - rand_x * rand_x);
 
             try {
                 randomPoint = randomPoint.add(nX.scale(rand_x));
@@ -174,8 +171,6 @@ public class Ray {
             }
             catch (Exception ex){}
 
-
-
             v12 = randomPoint.subtract(p0).normalize();
 
             double nt = alignZero(n.dotProduct(v12));
@@ -183,7 +178,7 @@ public class Ray {
             if (nv * nt > 0) {
                 rays.add(new Ray(p0, v12));
             }
-            radius-=delta_radius;
+            radius -= delta_radius;
         }
 
         return rays;
