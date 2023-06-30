@@ -2,6 +2,11 @@ package primitives;
 
 import static primitives.Util.isZero;
 
+/**
+ * The class is representing a bounding box.
+ * @author Sarit Tik 213230048 saritik16@gmail.com
+ * @author Hadas Zehevi 325543353 h0548510062@gmail.com
+ */
 public class BoundingBox {
 
     private final double xMin;

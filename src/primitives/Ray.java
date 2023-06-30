@@ -137,50 +137,66 @@ public class Ray {
     public Point getTargetPoint(double length) {
         return isZero(length) ? p0 : p0.add(dir.scale(length));
     }
-    
+
+    /**
+     * Generate a beam of rays from the ray
+     *
+     * @param n The normal vector of the plane
+     * @param radius The radius of the beam
+     * @param distance The distance from the ray to the plane
+     * @param numOfRays The number of rays in the beam
+     * @return A list of rays
+     */
     public List<Ray> generateBeam(Vector n, double radius, double distance, int numOfRays) {
         List<Ray> rays = new LinkedList<>();
-        rays.add(this);// Including the main ray
-        if (numOfRays == 1 || isZero(radius))// The component (glossy surface /diffuse glass) is turned off
+        rays.add(this); // Including the main ray
+
+        // If only one ray or radius is zero, the component is turned off
+        if (numOfRays == 1 || isZero(radius))
             return rays;
 
-        // the 2 vectors that create the virtual grid for the beam
+        // Create two vectors to define the virtual grid for the beam
         Vector nX = dir.createNormal();
         Vector nY = dir.crossProduct(nX);
 
-        Point centerCircle = this.getTargetPoint(distance);
+        Point centerCircle = this.getTargetPoint(distance); // Determine the center point of the circular area
         Point randomPoint;
-        Vector v12 ;
+        Vector v12;
 
+        double rand_x, rand_y;
+        double delta_radius = radius / (numOfRays - 1); // Calculate the change in radius for each ray
+        double nv = n.dotProduct(dir); // Calculate the dot product between n and dir vectors
 
-        double rand_x, rand_y,delta_radius = radius / (numOfRays - 1);
-        double nv = n.dotProduct(dir);
-
+        // Generate rays for the beam
         for (int i = 1; i < numOfRays; i++) {
             randomPoint = centerCircle;
+
+            // Generate random x and y coordinates within the circular area
             rand_x = random(-radius, radius);
             rand_y = randomSign() * Math.sqrt(radius * radius - rand_x * rand_x);
 
             try {
-                randomPoint = randomPoint.add(nX.scale(rand_x));
+                randomPoint = randomPoint.add(nX.scale(rand_x)); // Adjust the random point along the nX vector
+            } catch (Exception ex) {
             }
-            catch (Exception ex){}
 
             try {
-                randomPoint = randomPoint.add(nY.scale(rand_y));
+                randomPoint = randomPoint.add(nY.scale(rand_y)); // Adjust the random point along the nY vector
+            } catch (Exception ex) {
             }
-            catch (Exception ex){}
 
-            v12 = randomPoint.subtract(p0).normalize();
+            v12 = randomPoint.subtract(p0).normalize(); // Calculate the direction vector from p0 to the random point
 
-            double nt = alignZero(n.dotProduct(v12));
+            double nt = alignZero(n.dotProduct(v12)); // Calculate the dot product of n and v12, aligned to zero
 
+            // If the dot product of nv and nt is positive, add a new ray to the list
             if (nv * nt > 0) {
                 rays.add(new Ray(p0, v12));
             }
-            radius -= delta_radius;
+
+            radius -= delta_radius; // Decrease the radius for the next ray
         }
 
-        return rays;
+        return rays; // Return the list of rays
     }
 }

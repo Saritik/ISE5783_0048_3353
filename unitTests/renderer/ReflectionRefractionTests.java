@@ -176,16 +176,17 @@ public class ReflectionRefractionTests {
 		ImageWriter imageWriter = new ImageWriter("myShape", 500, 500);
 		camera.setImageWriter(imageWriter).setRayTracer(new RayTracerBasic(scene)).renderImage().writeToImage();
 	}
-	
+
+	/**Test method for {@link primitives.Ray#generateBeam(Vector, double, double, int)}*/
 	@Test
 	public void testBlurryGlass() {
-
-		Vector vTo = new Vector(0, 1, 0);
+		Vector vTo = new Vector(0, 1, 0); // Define the target vector for the camera
 		Camera camera = new Camera(new Point(0, -230, 0).add(vTo.scale(-13)), vTo, new Vector(0, 0, 1))
-				.setVPSize(200d, 200d).setVPDistance(1000);
+				.setVPSize(200d, 200d).setVPDistance(1000); // Create a camera object with position, target, and view plane settings
 
-		scene.setAmbientLight(new AmbientLight(new Color(gray).reduce(2), new Double3(0.15)));
+		scene.setAmbientLight(new AmbientLight(new Color(gray).reduce(2), new Double3(0.15))); // Set the ambient light of the scene
 
+        // Create geometric objects and add them to the scene
 		for (int i = -4; i < 6; i += 2) {
 			scene.geometries.add(
 					new Sphere(new Point(5 * i, -1.50, -3), 3).setEmission(new Color(red).reduce(4).reduce(2.2))
@@ -201,7 +202,6 @@ public class ReflectionRefractionTests {
 							new Point(5 * i + 4, -5, -11)).setEmission(new Color(250, 235, 215).reduce(2.5))
 							.setMaterial(new Material().setKd(0.001).setKs(0.002).setShininess(1).setKt(0.95)
 									.setBlurGlass(i == 4 ? 1 : 20, 0.3 * (i + 5), 1))
-
 			);
 		}
 
@@ -210,16 +210,16 @@ public class ReflectionRefractionTests {
 				.setMaterial(new Material().setKd(0.2).setKs(0).setShininess(0).setKt(0))
 		);
 
-		// scene.lights.add(new PointLight(new Color(100, 100, 150), new Point(0, 60)));
+        // Add lights to the scene
 		scene.lights.add(new DirectionalLight(new Color(white).reduce(1.3), new Vector(-0.4, 1, 0)));
 		scene.lights.add(new SpotLight(new Color(white).reduce(2), new Point(20.43303, -7.37104, 13.77329),
 				new Vector(-20.43, 7.37, -13.77)).setKl(0.6));
 
-		ImageWriter imageWriter = new ImageWriter("blurryGlass2", 500, 500);
-		camera.setImageWriter(imageWriter) //
-				.setRayTracer(new RayTracerBasic(scene)) //
-				.renderImage() //
-				.writeToImage();
+		ImageWriter imageWriter = new ImageWriter("blurryGlass2", 500, 500); // Create an ImageWriter for the output image
+		camera.setImageWriter(imageWriter) // Set the ImageWriter for the camera
+				.setRayTracer(new RayTracerBasic(scene)) // Set the RayTracer for the camera
+				.renderImage() // Render the image
+				.writeToImage(); // Write the image to a file
 
 	}
 }
