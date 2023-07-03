@@ -6,10 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="9c37c5e6-23e5-4a70-882f-b7ea210c4a4e" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/primitives/BoundingBox.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/primitives/BoundingBox.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/primitives/Ray.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/primitives/Ray.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/renderer/RayTracerBasic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/renderer/RayTracerBasic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/unitTests/renderer/ReflectionRefractionTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/unitTests/renderer/ReflectionRefractionTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,12 +127,20 @@
       <option name="project" value="LOCAL‎" />
       <updated>1687769759091</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL‎-00004" summary="finish stage 9">
+      <created>1688122745958</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL‎-00004" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1688122745960</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="limited commit" />
     <MESSAGE value="almost finish stage 9" />
-    <option name="LAST_COMMIT_MESSAGE" value="almost finish stage 9" />
+    <MESSAGE value="finish stage 9" />
+    <option name="LAST_COMMIT_MESSAGE" value="finish stage 9" />
   </component>
 </project>

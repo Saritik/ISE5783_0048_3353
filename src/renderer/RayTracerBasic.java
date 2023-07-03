@@ -8,15 +8,18 @@ import geometries.Intersectable.GeoPoint;
 import java.util.List;
 import static primitives.Util.*;
 
+/**
+ * A basic implementation of a ray tracer.
+ */
 public class RayTracerBasic extends RayTracerBase {
 
 	private static final int MAX_CALC_COLOR_LEVEL = 10;
 	private static final double MIN_CALC_COLOR_K = 0.001;
 
 	/**
-	 * Constructor for RayTracerBasic class
+	 * Constructor for the RayTracerBasic class.
 	 *
-	 * @param scene
+	 * @param scene The scene to be rendered.
 	 */
 	public RayTracerBasic(Scene scene) {
 		super(scene);
@@ -24,7 +27,7 @@ public class RayTracerBasic extends RayTracerBase {
 
 	@Override
 	public Color traceRay(Ray ray) {
-		// get the closet intersection point
+		// get the closest intersection point
 		var intersection = findClosestIntersection(ray);
 
 		// no intersection points
@@ -45,6 +48,14 @@ public class RayTracerBasic extends RayTracerBase {
 		return 1 == level ? color : color.add(calcGlobalEffects(gp, ray, level, k));
 	}
 
+	/**
+	 * Calculates the color at a specific intersection point based on local lighting effects.
+	 *
+	 * @param gp The intersection point.
+	 * @param ray The ray.
+	 * @param k The coefficient.
+	 * @return The color at the intersection point.
+	 */
 	private Color calcLocalEffects(GeoPoint gp, Ray ray, Double3 k) {
 		// Get the direction of the incoming ray
 		Vector v = ray.getDir();
@@ -55,8 +66,7 @@ public class RayTracerBasic extends RayTracerBase {
 		// Calculate the dot product between the normal and the ray direction
 		double nv = alignZero(n.dotProduct(v));
 
-		// If the dot product is zero, the ray is parallel to the surface, so return
-		// black
+		// If the dot product is zero, the ray is parallel to the surface, so return black
 		if (Util.isZero(nv))
 			return Color.BLACK;
 
@@ -96,6 +106,15 @@ public class RayTracerBasic extends RayTracerBase {
 		return color;
 	}
 
+	/**
+	 * Calculates the global lighting effects.
+	 *
+	 * @param gp The intersection point.
+	 * @param inRay The incoming ray.
+	 * @param level The recursion level.
+	 * @param k The coefficient.
+	 * @return The color after applying global lighting effects.
+	 */
 	private Color calcGlobalEffects(GeoPoint gp, Ray inRay, int level, Double3 k) {
 		Color color = Color.BLACK;
 		Vector n = gp.geometry.getNormal(gp.point);
@@ -108,7 +127,7 @@ public class RayTracerBasic extends RayTracerBase {
 
 			var rays = reflectedRay.generateBeam(n, gpMaterial.blurGlassRadius, gpMaterial.blurGlassDistance,
 					gpMaterial.numOfRays);
-			color = color.add(calcAvarageColor(rays, level - 1, kkr).scale(kr));
+			color = color.add(calcAverageColor(rays, level - 1, kkr).scale(kr));
 
 		}
 
@@ -118,7 +137,7 @@ public class RayTracerBasic extends RayTracerBase {
 
 			var rays = refractedRay.generateBeam(n, gpMaterial.blurGlassRadius, gpMaterial.blurGlassDistance,
 					gpMaterial.numOfRays);
-			color = color.add(calcAvarageColor(rays, level - 1, kkt).scale(kt));
+			color = color.add(calcAverageColor(rays, level - 1, kkt).scale(kt));
 		}
 		return color;
 	}
@@ -148,14 +167,13 @@ public class RayTracerBasic extends RayTracerBase {
 	}
 
 	/**
-	 * Calculate the transparency coefficient for the given geometry and light
-	 * source
+	 * Calculate the transparency coefficient for the given geometry and light source.
 	 *
-	 * @param gp The intersection point
-	 * @param light The light source
-	 * @param l The direction to the light source
-	 * @param n The normal at the intersection point
-	 * @return The transparency coefficient for the given geometry and light source
+	 * @param gp The intersection point.
+	 * @param light The light source.
+	 * @param l The direction to the light source.
+	 * @param n The normal at the intersection point.
+	 * @return The transparency coefficient for the given geometry and light source.
 	 */
 	private Double3 transparency(GeoPoint gp, LightSource light, Vector l, Vector n) {
 
@@ -173,21 +191,27 @@ public class RayTracerBasic extends RayTracerBase {
 		return ktr;
 	}
 
-
+	/**
+	 * Constructs the refracted ray for the given intersection point, incoming ray, and normal.
+	 *
+	 * @param pointGeo The intersection point.
+	 * @param inRay The incoming ray.
+	 * @param n The normal at the intersection point.
+	 * @return The refracted ray.
+	 */
 	private Ray constructRefractedRay(Point pointGeo, Ray inRay, Vector n) {
 		return new Ray(pointGeo, inRay.getDir(), n);
 	}
 
 	/**
-	 * Calculate the reflected ray for the given intersection point and ray
+	 * Constructs the reflected ray for the given intersection point, incoming ray, and normal.
 	 *
-	 * @param pointGeo The intersection point
-	 * @param inRay The ray
-	 * @param n The normal at the intersection point
-	 * @return The reflected ray for the given intersection point and ray
+	 * @param pointGeo The intersection point.
+	 * @param inRay The incoming ray.
+	 * @param n The normal at the intersection point.
+	 * @return The reflected ray.
 	 */
 	private Ray constructReflectedRay(Point pointGeo, Ray inRay, Vector n) {
-		// 𝒓=𝒗 −𝟐∙(𝒗∙𝒏)∙𝒏
 		Vector v = inRay.getDir();
 		double vn = v.dotProduct(n);
 
@@ -198,20 +222,34 @@ public class RayTracerBasic extends RayTracerBase {
 		Vector r = v.subtract(n.scale(2 * vn));
 		return new Ray(pointGeo, r, n);
 	}
-	
+
+	/**
+	 * Finds the closest intersection point between the given ray and the scene's geometries.
+	 *
+	 * @param ray The ray to intersect with the geometries.
+	 * @return The closest intersection point, or null if no intersection is found.
+	 */
 	private GeoPoint findClosestIntersection(Ray ray) {
 		return ray.findClosestGeoPoint(scene.geometries.findGeoIntersections(ray));
 	}
 
-	Color calcAvarageColor(List<Ray> rays, int level, Double3 kkt) {
+	/**
+	 * Calculates the average color for a list of rays.
+	 *
+	 * @param rays The list of rays to calculate the average color from.
+	 * @param level The recursion level.
+	 * @param kkt The coefficient.
+	 * @return The average color.
+	 */
+	Color calcAverageColor(List<Ray> rays, int level, Double3 kkt) {
 
 		Color color = Color.BLACK;
 		for (Ray ray : rays) {
 
-			GeoPoint intersction = findClosestIntersection(ray);
+			GeoPoint intersection = findClosestIntersection(ray);
 
-			if (intersction != null)
-				color = color.add(calcColor(intersction, ray, level - 1, kkt));
+			if (intersection != null)
+				color = color.add(calcColor(intersection, ray, level - 1, kkt));
 
 		}
 
